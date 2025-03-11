@@ -22,6 +22,7 @@ const {
   addOrder,
   removeFromPanier,
   clearPanier,
+  updateQuantity,
 } = require("../control/productControl");
 const isAuthAdmin = require("../middleWare/isAuthAdmin");
 
@@ -32,15 +33,16 @@ userRouter.post("/addUser", signUp);
 userRouter.post("/signIn", signInValidation, validation, signIn);
 userRouter.post("/auth", isAuth, getCurrent);
 userRouter.post("/email", signUpValidation, validation, emailValidation);
-userRouter.put("/updateUser",isAuth, updateUser);
+userRouter.put("/updateUser", isAuth, updateUser);
 
-productRouter.post("/add", isAuthAdmin, addProduct);
+productRouter.post("/add", addProduct);
 productRouter.get("/list", getProduct);
 productRouter.get("/One/:id", getOneProduct);
-productRouter.delete("/del/:id", isAuthAdmin, deleteOneProduct);
-productRouter.post("/addPanier",isAuth, addPanier);
-productRouter.post("/addOrder",isAuth, addOrder);
-productRouter.delete("/deleteOne",isAuth, removeFromPanier);
-productRouter.delete("/deleteAll",isAuth, clearPanier);
+productRouter.delete("/del/:id", deleteOneProduct);
+productRouter.post("/addPanier", addPanier);
+productRouter.post("/addOrder", isAuth, addOrder);
+productRouter.delete("/deleteOne", isAuth, removeFromPanier);
+productRouter.delete("/deleteAll", isAuth, clearPanier);
+productRouter.put("/updateQuantity", updateQuantity);
 
 module.exports = { userRouter, productRouter };

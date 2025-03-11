@@ -12,9 +12,9 @@ const Productschema = new mongoose.Schema(
       default: "on-stock",
       enum: ["on-stock", "out-of-stock"],
     },
-    colors: { type: [String], required: true },
-    sizes: { type: [String], required: true },
-    category: { type: String, required: true },
+    colors: { type: [String] },
+    sizes: { type: [String] },
+    category: { type: String },
   },
   { timestamps: true }
 );

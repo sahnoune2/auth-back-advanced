@@ -38,7 +38,7 @@ const deleteOneProduct = async (req, res) => {
     if (found == null) {
       res.status(400).send("Product Not Found");
     } else {
-       await Products.findByIdAndDelete(req.params.id);
+      await Products.findByIdAndDelete(req.params.id);
       res.status(200).send({ Msg: "Product Deleted Successfully" });
     }
   } catch (error) {
@@ -59,6 +59,8 @@ const addPanier = async (req, res) => {
       userFound.panier.push({ product: productFound._id, quantity });
       await userFound.save();
       res.status(200).send({ msg: "product added to panier " });
+    } else {
+      res.status(400).status({ msg: "user or product not found" });
     }
   } catch (error) {
     res.status(500).send({ msg: "error while trying to add to panier" });
@@ -92,6 +94,8 @@ const addOrder = async (req, res) => {
     } else {
       await order.save();
       await order.populate("userID");
+
+      
       await order.populate("panier.product");
       res
         .status(200)
@@ -144,6 +148,24 @@ const clearPanier = async (req, res) => {
   }
 };
 
+const updateQuantity = async (req, res) => {
+  const { userID, product, newQuantity } = req.body;
+  try {
+    const userFound = await users.findById(userID);
+    const productFound = await Products.findById(product);
+
+    if (productFound && userFound) {
+      
+      await userFound.save();
+      res.status(200).send({ msg: "quantity updated" });
+    } else {
+      res.status(400).send({ msg: "product not found or user not found  " });
+    }
+  } catch (error) {
+    res.status(500).send({ msg: "error while trying to modify quantity" });
+  }
+};
+
 module.exports = {
   addProduct,
   getProduct,
@@ -153,4 +175,5 @@ module.exports = {
   addOrder,
   removeFromPanier,
   clearPanier,
+  updateQuantity,
 };
